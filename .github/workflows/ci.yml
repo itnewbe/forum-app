@@ -1,4 +1,5 @@
-name: CI / test
+name: CI
+
 on:
   push:
     branches: [main]
@@ -7,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: CI / test # <-- ini tempat yang benar
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
