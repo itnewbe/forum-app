@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: CI / test # <-- ini tempat yang benar
+    name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
