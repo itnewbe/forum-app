@@ -18,8 +18,4 @@ describe("threadsSlice reducer", () => {
     expect(newState.threads).toHaveLength(1);
     expect(newState.threads[0].title).toBe("Test");
   });
-  // ❌ Tambahkan test ini untuk sengaja gagal
-  it("should fail this test intentionally", () => {
-    expect(true).toBe(false); // ini akan fail
-  });
 });
