@@ -1,3 +1,4 @@
+/* eslint-env cypress */
 /// <reference types="cypress" />
 
 describe("Login Flow", () => {
@@ -7,7 +8,6 @@ describe("Login Flow", () => {
     cy.get('input[placeholder="Enter your password"]').type("123456");
     cy.get("button").contains("Login").click();
     cy.url().should("eq", "http://localhost:3000/");
-    cy.url().should("include", "/");
     cy.contains("Logout").should("exist");
   });
 });

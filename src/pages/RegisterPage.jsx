@@ -1,28 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 
 export default function RegisterPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     try {
-      await dispatch(registerUser(form)).unwrap();
+      await dispatch(registerUser(data)).unwrap();
       Swal.fire({
         icon: "success",
         title: "Account created!",
@@ -51,44 +48,63 @@ export default function RegisterPage() {
         <h2 className="text-3xl font-extrabold text-center text-indigo-700 mb-6">
           Create Your Account
         </h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="relative">
             <input
-              name="name"
+              {...register("name", { required: "Name is required" })}
               placeholder="Full Name"
-              onChange={handleChange}
-              required
               className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <FontAwesomeIcon icon={faUser} />
             </span>
+            {errors.name && (
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+            )}
           </div>
           <div className="relative">
             <input
-              name="email"
               type="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Enter a valid email",
+                },
+              })}
               placeholder="Email Address"
-              onChange={handleChange}
-              required
               className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <FontAwesomeIcon icon={faEnvelope} />
             </span>
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
           <div className="relative">
             <input
-              name="password"
               type="password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
               placeholder="Password"
-              onChange={handleChange}
-              required
               className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <FontAwesomeIcon icon={faLock} />
             </span>
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
           <button
             type="submit"

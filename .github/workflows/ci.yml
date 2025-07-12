@@ -1,14 +1,12 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
-  test:
-    name: CI / test # <-- ini tempat yang benar
+  ci_test:
+    name: CI / test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,4 +14,5 @@ jobs:
         with:
           node-version: 18
       - run: npm ci
-      - run: npm test -- --watchAll=false
+      - name: Run tests
+        run: npm test -- --watchAll=false
