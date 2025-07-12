@@ -1,14 +1,12 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
-  ci_test: # <--- Ini adalah `id` job yang menentukan nama status check di branch protection
-    name: CI / test # <--- Ini cuma nama tampilan di PR, tidak berpengaruh ke branch protection
+  ci_test:
+    name: CI / test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
