@@ -1,7 +1,5 @@
-// ✅ Test for branch protection check
 import threadsReducer, { setThreads } from "../threadsSlice";
 
-// 📝 Added for branch protection test
 describe("threadsSlice reducer", () => {
   it("should handle initial state", () => {
     expect(threadsReducer(undefined, {})).toEqual({
