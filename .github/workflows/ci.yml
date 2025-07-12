@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: test
+  ci_test: # <--- Ini adalah `id` job yang menentukan nama status check di branch protection
+    name: CI / test # <--- Ini cuma nama tampilan di PR, tidak berpengaruh ke branch protection
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
