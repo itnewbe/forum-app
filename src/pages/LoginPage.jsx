@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,16 +9,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { loginUserAsync } from "../redux/slices/authSlice";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (data) => {
     try {
-      await dispatch(loginUserAsync({ email, password })).unwrap();
+      await dispatch(loginUserAsync(data)).unwrap();
       Swal.fire({
         icon: "success",
         title: "Login Successful",
@@ -38,7 +42,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-600">
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md space-y-6"
       >
         <h2 className="text-2xl font-bold text-center text-gray-800 flex items-center justify-center gap-2">
@@ -62,12 +66,19 @@ const LoginPage = () => {
               id="email"
               type="email"
               placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Enter a valid email",
+                },
+              })}
               className="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
+          {errors.email && (
+            <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+          )}
         </div>
 
         <div>
@@ -86,12 +97,21 @@ const LoginPage = () => {
               id="password"
               type="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Minimum 6 characters",
+                },
+              })}
               className="w-full pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
+          {errors.password && (
+            <p className="text-sm text-red-500 mt-1">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         <button
@@ -101,6 +121,7 @@ const LoginPage = () => {
           <FontAwesomeIcon icon={faSignInAlt} />
           Login
         </button>
+
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Don&apos;t have an account?{" "}

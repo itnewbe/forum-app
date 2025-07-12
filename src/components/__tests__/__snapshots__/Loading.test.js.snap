@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading component should match snapshot 1`] = `
+<div>
+  <div
+    class="w-full h-1 bg-gray-200"
+    role="progressbar"
+  >
+    <div
+      class="h-full bg-blue-500 animate-pulse"
+    />
+  </div>
+</div>
+`;
